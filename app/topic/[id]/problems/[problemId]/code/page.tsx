@@ -101,7 +101,7 @@ export default function CodeProblemPage() {
 
   const handleRunTests = async (code: string): Promise<any[]> => {
     try {
-      const result = await submitCode(user.id, problemId, code, problem.language || 'javascript');
+      const result = await submitCode(user.id, problemId, code, problem.language || 'text');
       if (result.error) {
         toast.error(result.error);
         return testCases.map((tc: any) => ({
@@ -192,7 +192,7 @@ export default function CodeProblemPage() {
     );
   }
 
-  const defaultCode = savedCode || problem.starter_code || `// Write your solution here\nfunction solution(input) {\n  // Your code here\n  return result;\n}`;
+  const defaultCode = savedCode || problem.starter_code || `// Write your solution here in any programming language`;
 
   const getDifficultyColor = (d: string) =>
     d === 'easy' ? 'text-green-600' : d === 'medium' ? 'text-yellow-600' : 'text-red-600';
@@ -227,9 +227,6 @@ export default function CodeProblemPage() {
         <div className="flex items-center gap-3">
           <Badge variant="outline" className={`text-xs capitalize border-gray-200 ${getDifficultyColor(problem.difficulty)}`}>
             {problem.difficulty}
-          </Badge>
-          <Badge variant="outline" className="text-xs border-gray-200 text-gray-500">
-            {problem.language || 'JavaScript'}
           </Badge>
           {isSolved && (
             <span className="flex items-center gap-1 text-xs text-gray-400">
@@ -280,14 +277,14 @@ export default function CodeProblemPage() {
         <section className="lg:w-2/3 flex flex-col overflow-hidden">
           <div className="flex items-center justify-between px-4 py-2.5 border-b border-gray-100 bg-gray-50">
             <div className="flex items-center gap-2">
-              <span className="text-xs font-medium text-purple-600 bg-purple-50 border border-purple-200 px-2 py-0.5 rounded">
-                {problem.language || 'JavaScript'}
-              </span>
+              <p className="text-sm text-gray-600">
+                <span className="font-medium">✨ Supports any language</span> — Write your solution in the language of your choice
+              </p>
             </div>
           </div>
           <div className="flex-1 overflow-hidden">
             <CodeEditor
-              language={problem.language || 'javascript'}
+              language={problem.language || 'text'}
               defaultCode={defaultCode}
               testCases={testCases}
               onSubmit={isSolved ? undefined : handleSubmit}
